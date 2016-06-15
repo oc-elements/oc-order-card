@@ -1,0 +1,223 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-data-table/iron-data-table.html">
+<link rel="import" href="../paper-card/paper-card.html">
+<link rel="import" href="../paper-tooltip/paper-tooltip.html">
+<link rel="import" href="../oc-core-utils/formatter-behaviour.html">
+<link rel="import" href="../oc-order-behaviour/oc-order-behaviour.html">
+<link rel="import" href="../oc-order-summary/oc-order-summary.html">
+<link rel="import" href="oc-order-card-styles.html">
+
+<!--
+A card to display an order's details
+@demo
+-->
+<dom-module id="oc-order-card">
+
+  <style include="table-styles"></style>
+
+  <template>
+    <style include="oc-order-card-styles iron-flex iron-flex-alignment iron-flex-factors">
+      :host {
+        display: block;
+      }
+    </style>
+
+    <paper-card partially-rejected$="[[ _isPartiallyRejectedOrder(order) ]]">
+
+      <oc-order-summary order="[[ order ]]"></oc-order-summary>
+
+      <div class="heading layout horizontal">
+        <div class="flex">Details</div>
+        <div class="flex">Customer</div>
+        <div class="flex">Ordering items from</div>
+      </div>
+      <div class="card-content layout horizontal">
+        <div class="flex">
+          <div class="property layout horizontal">
+            <div class="name flex">Order Short Ref:</div>
+            <div class="value flex-2">[[ order.shortReference ]]</div>
+          </div>
+          <div class="property layout horizontal">
+            <div class="name flex">Status:</div>
+            <div class="value flex-2">[[ order.status.name ]]</div>
+          </div>
+          <div class="property layout horizontal">
+            <div class="name flex">Created On:</div>
+            <div class="value flex-2">[[ formatDate(order.dateCreated) ]]</div>
+          </div>
+          <div class="property layout horizontal">
+            <div class="name flex">Est. Delivery Time:</div>
+            <div class="value flex-2">[[ formatDate(order.estimatedDeliveryTime) ]]</div>
+          </div>
+          <div class="property layout horizontal">
+            <div class="name flex">Payment Status:</div>
+            <div class="value flex-2">[[ order.paymentStatus.status ]] - [[ order.paymentMethods ]]</div>
+          </div>
+          <div class="property layout horizontal">
+            <div class="name flex">Amount:</div>
+            <div class="value flex-2">R <span>[[ formatMoney(order.amount) ]]</span></div>
+          </div>
+          <div class="property layout horizontal">
+            <div class="name flex">Delivery Type:</div>
+            <div class="value flex-2">[[ order.deliveryType ]]</div>
+          </div>
+          <div class="property layout horizontal" hidden$="[[ !order.delivery ]]">
+            <div class="name flex">Delivery Fee:</div>
+            <div class="value flex-2">R <span>[[ formatMoney(order.deliveryCost) ]]</span></div>
+          </div>
+          <div class="property layout horizontal" hidden$="[[ !order.delivery ]]">
+            <div class="name flex">Delivery Agent:</div>
+            <div class="value flex-2">
+              <span hidden$="[[ !order.deliveryAgent ]]">[[ _deliveryAgentFullName(order.deliveryAgent) ]]</span>
+              <span hidden$="[[ order.deliveryAgent ]]">- none -</span>
+            </div>
+          </div>
+          <div class="property layout horizontal">
+            <div class="name flex">Order Source:</div>
+            <div class="value flex-2">
+              <span>[[ order.organisation.name ]]</span>
+              <span hidden$="[[ !order.orderSourceChannel.name ]]">-</span>
+              <span>[[ order.orderSourceChannel.name ]]</span>
+            </div>
+          </div>
+          <div class="property layout horizontal" hidden$="[[ !order.note ]]">
+            <div class="name flex">Order Note:</div>
+            <div class="value flex-2">[[ order.note ]]</div>
+          </div>
+        </div>
+        <div class="flex">
+          <div class="property layout horizontal">
+            <div class="name flex">Name:</div>
+            <div class="value flex-2">
+              <span>[[ order.user.profile.firstName ]]</span>
+              <span>[[ order.user.profile.surname ]]</span>
+            </div>
+          </div>
+          <div class="property layout horizontal">
+            <div class="name flex">Email:</div>
+            <div class="value flex-2">[[ order.user.profile.email ]]</div>
+          </div>
+          <div class="property layout horizontal">
+            <div class="name flex">Phone:</div>
+            <div class="value flex-2">[[ order.user.profile.cellphoneNumber ]]</div>
+          </div>
+          <div class="property layout horizontal">
+            <div class="name flex">Address:</div>
+            <div class="value flex-2">
+              <div hidden$="[[ !order.userGeo.complex ]]">[[ order.userGeo.complex ]]</div>
+              <div>
+                <span>[[ order.userGeo.streetNumber ]]</span>
+                <span>[[ order.userGeo.streetName ]]</span>
+              </div>
+              <div hidden$="[[ !order.userGeo.suburb ]]">[[ order.userGeo.suburb ]]</div>
+              <div>[[ order.userGeo.city ]]</div>
+              <div>[[ order.userGeo.postalCode ]]</div>
+            </div>
+          </div>
+        </div>
+        <div class="flex">
+          <template is="dom-repeat" items="[[ _getOrderingFromOrganisations(order) ]]" as="organisation">
+            <div class="property layout horizontal">
+              <div class="divider flex">[[ organisation.name ]]</div>
+            </div>
+            <div class="property layout horizontal" hidden$="[[ !organisation.contactNumber ]]">
+              <div class="name flex">Contact number:</div>
+              <div class="value flex-2">[[ organisation.contactNumber ]]</div>
+            </div>
+            <div class="property layout horizontal">
+              <div class="name flex">Address:</div>
+              <div class="value flex-2">
+                <div hidden$="[[ !organisation.address.complex ]]">[[ organisation.address.complex ]]</div>
+                <div>
+                  <span>[[ organisation.address.streetNumber ]]</span>
+                  <span>[[ organisation.address.streetName ]]</span>
+                </div>
+                <div hidden$="[[ !organisation.address.suburb ]]">[[ organisation.address.suburb ]]</div>
+                <div>[[ organisation.address.city ]]</div>
+                <div>[[ organisation.address.postalCode ]]</div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <!-- Items list -->
+      <template is="dom-repeat" items="[[ _getOrderingFromOrganisations(order) ]]" as="organisation">
+        <div class="heading layout horizontal">
+          <div class="flex">Items from <span>[[ organisation.name ]]</span></div>
+          <span class="has-tooltip">
+            Total: R <span>[[ _getMerchantTotalLinePrice(organisation, order) ]]</span>
+            <paper-tooltip position="left">
+              <div>Markup: R <span>[[ _getMerchantTotalMarkup(organisation, order) ]]</span></div>
+              <br>
+              <div>Discount: R <span>[[ _getMerchantTotalDiscount(organisation, order) ]]</span></div>
+              <br>
+              <div>Sub Total: R <span>[[ _getMerchantSubtotalPrice(organisation, order) ]]</span></div>
+            </paper-tooltip>
+          </span>
+        </div>
+        <table>
+          <thead><tr>
+            <th width="80">SKU</th>
+            <th>Name</th>
+            <th>Options</th>
+            <th>Extras</th>
+            <th width="120">Price</th>
+            <th width="100">Quantity</th>
+            <th width="100">Status</th>
+            <th width="110">Est. Ready</th>
+          </tr></thead>
+          <tbody>
+          <template is="dom-repeat" items="[[ _getItemsOfOrganisation(order, organisation) ]]">
+            <tr rejected$="[[ _isPartiallyRejectedItem(item) ]]">
+              <td>[[ item.detail.sku ]]</td>
+              <td>[[ item.detail.name ]]</td>
+              <td>[[ _getItemOptions(item) ]]</td>
+              <td>[[ _getItemExtras(item) ]]</td>
+              <td class="has-tooltip">
+                R <span>[[ formatMoney(item.linePrice) ]]</span>
+                <paper-tooltip position="left">
+                  <div>Markup: R <span>[[ formatMoney(item.markup) ]]</span></div>
+                  <br>
+                  <div>Discount: R <span>[[ formatMoney(item.itemDiscount.discountAmount) ]]</span></div>
+                  <br>
+                  <div>Price: R <span>[[ formatMoney(item.price) ]]</span></div>
+                </paper-tooltip>
+              </td>
+              <td>[[ item.quantity ]]</td>
+              <td>[[ item.status.name ]]</td>
+              <td>
+                <span>[[ item.readyEstimate ]]</span> min
+              </td>
+            </tr>
+          </template>
+          </tbody>
+        </table>
+      </template>
+
+    </paper-card>
+
+  </template>
+
+  <script>
+    (function () {
+      'use strict';
+
+      Polymer({
+        is: 'oc-order-card',
+        behaviors: [OC.Behaviours.Order],
+
+        properties: {
+          /**
+           * The order to display
+           */
+          order: Object
+        }
+
+      });
+    })();
+  </script>
+
+</dom-module>

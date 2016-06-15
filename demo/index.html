@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+  <head>
+    <title>oc-order-card demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+
+    <link rel="import" href="../oc-order-card.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+    </style>
+  </head>
+  <body>
+
+    <oc-order-card></oc-order-card>
+
+    <script>
+      (function() {
+        document.querySelector('oc-order-card').order = {id:589,reference:"XYZ-2016-06-13T09:42:57-79-130995526",shortReference:"XYZ000000589",dateCreated:"2016-06-1309:42:57.656",lastUpdated:"2016-06-1311:08:13.363",estimatedDeliveryTime:"2016-06-1310:42:57.648",status:{id:3,name:"Accepted",description:"Unit accepted item"},items:[{id:1054,unitPrice:59.9,markup:null,price:59.9,quantity:1,linePrice:59.9,enabled:true,detail:{id:74,name:"Hake fillet (Large) & Chips",price:59.9,description:"Hake fillet (Large) & Chips",shortDescription:"Hake fillet (Large) & Chips",organisation:{id:91,name:"ABC co.",code:"ABC",address:{id:119,longitude:"30.375752896070477",latitude:"-29.599133056228236",name:"ABC co. HQ",streetNumber:"48",streetName:"Chief Albert Luthuli St",complex:"",suburb:"",city:"Pietermaritzburg",postalCode:"",province:null,country:null},contactNumber:"0023001180"},available:true,enabled:true,sku:"",availableOnline:true,productType:{id:3,name:"Single",description:"Single product"},groupItems:null},status:{id:3,name:"Accepted",description:"Unit accepted item"},note:"Test Item Note",itemDiscount:null,readyEstimate:15,extras:[],options:[],instorePaymentRequired:true}],organisation:{id:3,name:"XYZ co.",code:"XYZ",address:{id:133,longitude:"19.44698",latitude:"-33.6432",name:"Worcester",streetNumber:"46",streetName:"Highstr",complex:"",suburb:"",city:"Worcester",postalCode:"6850",province:null,country:"South Africa"},contactNumber:"81-011-8411"},paymentStatus:{status:"UNPAID",when:"2016-06-1309:42:57.638",message:null},user:{id:79,username:"someone@ordercloud.co.za",profile:{firstName:"John",surname:"Doe",email:"someone@ordercloud.co.za",nickName:null,cellphoneNumber:"27825715207",sex:"M"}},amount:91.92,deliveryType:"DELIVERY",userGeo:{latitude:"-29.6283442",name:"10, Gower rd",streetNumber:"10",streetName:"Gower rd",complex:"",suburb:"",city:"Pietermaritzburg",postalCode:"3201",note:"",favourite:false,id:1678,enabled:true,longitude:"30.3858525"},deliveryAgent:{id:36,user:{id:1809,username:"0717071664",profile:{firstName:"Robert",surname:"Hlongwane",email:"",nickName:"",cellphoneNumber:"27710002164",sex:"M"}},organisation:{id:71,name:"XYZ co.",code:"XYZ",},minBalance:null,maxBalance:null,enabled:true,status:{id:3,status:"On Duty"},accountNo:null,cardNo:null,walletId:null},note:"Test Order Note",paymentMethods:["COD"],delivery:{external:false,organisation:{id:3,name:"XYZ co.",code:"XYZ",}},orderSourceChannel:null,deliveryCost:32.02,adminFee:null,tip:0.0,scheduledDate:null,picker:null,price:91.92};
+      })();
+    </script>
+
+  </body>
+</html>
