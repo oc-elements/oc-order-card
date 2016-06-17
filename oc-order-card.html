@@ -1,9 +1,13 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="../iron-selector/iron-selector.html">
 <link rel="import" href="../iron-data-table/iron-data-table.html">
 <link rel="import" href="../paper-card/paper-card.html">
 <link rel="import" href="../paper-tooltip/paper-tooltip.html">
+<link rel="import" href="../paper-tabs/paper-tabs.html">
+<link rel="import" href="../paper-tabs/paper-tab.html">
 <link rel="import" href="../oc-core-utils/formatter-behaviour.html">
 <link rel="import" href="../oc-order-behaviour/oc-order-behaviour.html">
 <link rel="import" href="../oc-order-summary/oc-order-summary.html">
@@ -26,13 +30,14 @@ A card to display an order's details
 
       <oc-order-summary order="[[ order ]]"></oc-order-summary>
 
-      <div class="heading layout horizontal">
-        <div class="flex">Details</div>
-        <div class="flex">Customer</div>
-        <div class="flex">Ordering items from</div>
-      </div>
-      <div class="card-content layout horizontal">
-        <div class="flex">
+      <paper-tabs selected="{{ selectedTab }}" scrollable fit-container>
+        <paper-tab>Details</paper-tab>
+        <paper-tab>Customer</paper-tab>
+        <paper-tab>Ordering items from</paper-tab>
+      </paper-tabs>
+
+      <iron-pages selected="{{ selectedTab }}" class="card-content">
+        <div>
           <div class="property layout horizontal">
             <div class="name flex">Order Short Ref:</div>
             <div class="value flex-2">[[ order.shortReference ]]</div>
@@ -85,7 +90,7 @@ A card to display an order's details
             <div class="value flex-2">[[ order.note ]]</div>
           </div>
         </div>
-        <div class="flex">
+        <div>
           <div class="property layout horizontal">
             <div class="name flex">Name:</div>
             <div class="value flex-2">
@@ -115,7 +120,7 @@ A card to display an order's details
             </div>
           </div>
         </div>
-        <div class="flex">
+        <div>
           <template is="dom-repeat" items="[[ _getOrderingFromOrganisations(order) ]]" as="organisation">
             <div class="property layout horizontal">
               <div class="divider flex">[[ organisation.name ]]</div>
@@ -139,7 +144,7 @@ A card to display an order's details
             </div>
           </template>
         </div>
-      </div>
+      </iron-pages>
 
       <!-- Items list -->
       <template is="dom-repeat" items="[[ _getOrderingFromOrganisations(order) ]]" as="organisation">
@@ -156,43 +161,45 @@ A card to display an order's details
             </paper-tooltip>
           </span>
         </div>
-        <table>
-          <thead><tr>
-            <th width="80">SKU</th>
-            <th>Name</th>
-            <th>Options</th>
-            <th>Extras</th>
-            <th width="120">Price</th>
-            <th width="100">Quantity</th>
-            <th width="100">Status</th>
-            <th width="110">Est. Ready</th>
-          </tr></thead>
-          <tbody>
-          <template is="dom-repeat" items="[[ _getItemsOfOrganisation(order, organisation) ]]">
-            <tr rejected$="[[ _isPartiallyRejectedItem(item) ]]">
-              <td>[[ item.detail.sku ]]</td>
-              <td>[[ item.detail.name ]]</td>
-              <td>[[ _getItemOptions(item) ]]</td>
-              <td>[[ _getItemExtras(item) ]]</td>
-              <td class="has-tooltip">
-                R <span>[[ formatMoney(item.linePrice) ]]</span>
-                <paper-tooltip position="left">
-                  <div>Markup: R <span>[[ formatMoney(item.markup) ]]</span></div>
-                  <br>
-                  <div>Discount: R <span>[[ formatMoney(item.itemDiscount.discountAmount) ]]</span></div>
-                  <br>
-                  <div>Price: R <span>[[ formatMoney(item.price) ]]</span></div>
-                </paper-tooltip>
-              </td>
-              <td>[[ item.quantity ]]</td>
-              <td>[[ item.status.name ]]</td>
-              <td>
-                <span>[[ item.readyEstimate ]]</span> min
-              </td>
-            </tr>
-          </template>
-          </tbody>
-        </table>
+        <div class="items-table">
+          <table>
+            <thead><tr>
+              <th width="80">SKU</th>
+              <th>Name</th>
+              <th>Options</th>
+              <th>Extras</th>
+              <th width="120">Price</th>
+              <th width="100">Quantity</th>
+              <th width="100">Status</th>
+              <th width="110">Est. Ready</th>
+            </tr></thead>
+            <tbody>
+            <template is="dom-repeat" items="[[ _getItemsOfOrganisation(order, organisation) ]]">
+              <tr rejected$="[[ _isPartiallyRejectedItem(item) ]]">
+                <td>[[ item.detail.sku ]]</td>
+                <td>[[ item.detail.name ]]</td>
+                <td>[[ _getItemOptions(item) ]]</td>
+                <td>[[ _getItemExtras(item) ]]</td>
+                <td class="has-tooltip">
+                  R <span>[[ formatMoney(item.linePrice) ]]</span>
+                  <paper-tooltip position="left">
+                    <div>Markup: R <span>[[ formatMoney(item.markup) ]]</span></div>
+                    <br>
+                    <div>Discount: R <span>[[ formatMoney(item.itemDiscount.discountAmount) ]]</span></div>
+                    <br>
+                    <div>Price: R <span>[[ formatMoney(item.price) ]]</span></div>
+                  </paper-tooltip>
+                </td>
+                <td>[[ item.quantity ]]</td>
+                <td>[[ item.status.name ]]</td>
+                <td>
+                  <span>[[ item.readyEstimate ]]</span> min
+                </td>
+              </tr>
+            </template>
+            </tbody>
+          </table>
+        </div>
       </template>
 
     </paper-card>
@@ -212,6 +219,10 @@ A card to display an order's details
            * The order to display
            */
           order: Object
+        },
+
+        ready: function() {
+          this.selectedTab = 0;
         }
 
       });
