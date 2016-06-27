@@ -9,11 +9,11 @@
     "iron-data-table": "^1.0.0-beta3",
     "paper-card": "PolymerElements/paper-card#^1.1.1",
     "paper-tooltip": "PolymerElements/paper-tooltip#^1.1.2",
-    "oc-core-utils": "^0.1.0",
-    "oc-order-behaviour": "^0.1.0",
-    "oc-order-summary": "^0.1.1",
-    "paper-tabs": "PolymerElements/paper-tabs#^1.6.2",
-    "iron-pages": "PolymerElements/iron-pages#^1.0.7"
+    "iron-pages": "PolymerElements/iron-pages#^1.0.7",
+    "oc-core-utils": "git://github.com/oc-elements/oc-core-utils#1.x",
+    "oc-order-behaviour": "git://github.com/oc-elements/oc-order-behaviour#1.x",
+    "oc-order-summary": "git://github.com/oc-elements/oc-order-summary#1.x",
+    "paper-tabs": "PolymerElements/paper-tabs#^1.6.2"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
