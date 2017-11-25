@@ -1,15 +1,14 @@
-<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="../iron-pages/iron-pages.html">
 <link rel="import" href="../iron-selector/iron-selector.html">
-<link rel="import" href="../iron-data-table/iron-data-table.html">
 <link rel="import" href="../paper-card/paper-card.html">
 <link rel="import" href="../paper-tooltip/paper-tooltip.html">
 <link rel="import" href="../paper-tabs/paper-tabs.html">
 <link rel="import" href="../paper-tabs/paper-tab.html">
-<link rel="import" href="../oc-core-utils/formatter-behaviour.html">
-<link rel="import" href="../oc-order-behaviour/oc-order-behaviour.html">
+<link rel="import" href="../oc-core-utils/oc-order-helper.html">
+<link rel="import" href="../oc-core-utils/oc-formatter.html">
 <link rel="import" href="../oc-order-summary/oc-order-summary.html">
 <link rel="import" href="oc-order-card-styles.html">
 
@@ -18,7 +17,6 @@ A card to display an order's details
 @demo
 -->
 <dom-module id="oc-order-card">
-
   <template>
     <style include="oc-order-card-styles iron-flex iron-flex-alignment iron-flex-factors">
       :host {
@@ -207,26 +205,31 @@ A card to display an order's details
   </template>
 
   <script>
-    (function () {
-      'use strict';
+    /**
+     * `oc-order-card`
+     * Order Card
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class OcOrderCard extends Ordercloud.OrderHelper(Ordercloud.Formatter(Polymer.Element)){
+      static get is() { return 'oc-order-card'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'oc-order-card'
+          }
+        };
+      }
 
-      Polymer({
-        is: 'oc-order-card',
-        behaviors: [OC.Behaviours.Order],
-
-        properties: {
-          /**
-           * The order to display
-           */
-          order: Object
-        },
-
-        ready: function() {
+      ready(){
           this.selectedTab = 0;
-        }
+      }
 
-      });
-    })();
+    }
+
+    window.customElements.define(OcOrderCard.is, OcOrderCard);
   </script>
-
 </dom-module>
